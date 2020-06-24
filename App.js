@@ -20,9 +20,15 @@ export default class extends React.Component {
         .then((json) => {
           const {
             main: { temp },
-            weather,
+            weather: [{ main: condition }],
+            name,
           } = json;
-          this.setState({ isLoading: false, temp, condition: weather[0].main });
+          this.setState({
+            isLoading: false,
+            temp,
+            condition,
+            name,
+          });
           console.log(json);
         });
     } catch (error) {
@@ -46,20 +52,11 @@ export default class extends React.Component {
     this.getLocation();
   }
   render() {
-    const { isLoading, temp, condition } = this.state;
+    const { isLoading, temp, condition, name } = this.state;
     return isLoading ? (
       <Loader />
     ) : (
-      <Weather temp={temp} condition={condition} />
+      <Weather temp={temp} condition={condition} name={name} />
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
